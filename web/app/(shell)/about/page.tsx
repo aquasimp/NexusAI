@@ -3,7 +3,7 @@ import { Panel } from "@/components/ui";
 
 const STACK = [
   ["Frontend", "Next.js 16 (App Router) · React 19 · TypeScript strict · Tailwind v4 · Framer Motion · hand-written SVG charts"],
-  ["Backend", "Python 3.12 · FastAPI · asyncio · Server-Sent Events · SQLite · Pydantic Settings"],
+  ["Backend", "Python 3.11+ · FastAPI · asyncio · Server-Sent Events · SQLite · Pydantic Settings"],
   ["ML / stats", "NumPy · SciPy · scikit-learn (LedoitWolf, IsolationForest, LogisticRegression, TruncatedSVD, GroupKFold) · custom harmonic regression, AR(1) whitening, CUSUM, BM25"],
   ["AI layer", "Provider-agnostic LLM client (OpenAI · Anthropic · Ollama · deterministic) · typed tool registry · schema-validated structured output"],
 ];
@@ -14,7 +14,7 @@ const DECISIONS = [
   ["Statistics decide, the LLM explains",
    "LLMs are excellent at narrating evidence and poor at being a calibrated classifier over 54 correlated numeric series. Ranking lives in a model I can cross-validate; the LLM gets tools, an evidence packet, and the right to disagree in writing."],
   ["Lexical hybrid retrieval over neural embeddings",
-   "On a 60-chunk corpus dense with exact technical tokens, BM25 + LSA fused by RRF measured competitively while adding zero model downloads and staying deterministic. The Evaluation page publishes the retrieval numbers so the trade-off is auditable rather than assumed."],
+   "On a 40-chunk corpus dense with exact technical tokens, BM25 + LSA fused by RRF measured competitively while adding zero model downloads and staying deterministic. The Evaluation page publishes the retrieval numbers so the trade-off is auditable rather than assumed."],
   ["Independent recovery verification",
    "Any system that proposes fixes must be able to be wrong. Post-remediation the detector re-evaluates for six consecutive clear ticks; a wrong action produces no recovery and the incident escalates. This is the difference between a workflow and a demo."],
   ["Provenance labels in the product, not just the README",

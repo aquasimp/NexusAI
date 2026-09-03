@@ -15,7 +15,7 @@ const LAYERS = [
   ["5 · Retrieval", "REAL",
    "BM25 fused with TF-IDF + Truncated SVD via reciprocal rank fusion over a 10-document runbook corpus, with a service-tag boost and one-chunk-per-document dedup. Retrieved documents carry an executable action manifest."],
   ["6 · Agent", "REAL",
-   "A bounded tool-calling loop over eight tools that read genuine world state: query_metrics, search_logs, get_deployments, get_topology, search_runbooks, read_runbook, get_blame_ranking, compare_windows. The LLM critiques the ranking and narrates; it cannot originate the verdict. Schema-validated output, deterministic analyst fallback."],
+   "A bounded tool-calling loop over nine tools that read genuine world state: query_metrics, search_logs, get_deployments, get_topology, search_runbooks, read_runbook, get_blame_ranking, estimate_impact, compare_windows. The LLM critiques the ranking and narrates; it cannot originate the verdict. Schema-validated output, deterministic analyst fallback."],
   ["7 · Policy & actuation", "REAL plan / SIMULATED effect",
    "Actions come only from retrieved runbooks. Risk ≥ medium, irreversibility, wide blast radius or SEV1 forces a human approval gate implemented as an asyncio event. Execution mutates the environment's fault objects, then the detector independently verifies recovery — a wrong action leaves the system broken and the incident escalates."],
   ["8 · Evaluation", "REAL",

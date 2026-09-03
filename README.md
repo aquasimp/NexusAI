@@ -81,6 +81,8 @@ NEXUS AI orchestrates incident response through an auditable 15-stage state mach
 
 ## Simulated System Topology
 
+![NEXUS AI System Architecture & Pipeline](docs/images/architecture-diagram.svg)
+
 The engine simulates an e-commerce platform spanning **9 services** across **4 architectural tiers** and **5 service kinds**:
 
 ```
@@ -260,26 +262,22 @@ NEXUS AI provides a full operator cockpit across 5 specialized views:
 ### 1. Command Center (`/command`)
 Real-time operational dashboard displaying live telemetry charts, microservice health grids, and one-click scenario fault injection controls.
 
-> **[Add Command Center Screenshot]**  
-> *Live telemetry streams, service mesh health status, and active fault injection panel.*
+![Command Center Dashboard](docs/images/command-center.png)
 
 ### 2. Incident Investigation (`/incident`)
 Live audit trail showing the 15-stage state machine, CUSUM changepoint curves, blame attribution breakdowns, and the interactive human approval modal.
 
-> **[Add Investigation Timeline Screenshot]**  
-> *15-stage SSE investigation trace, CUSUM changepoint analysis, and root-cause blame ranking.*
+![Incident Investigation Timeline](docs/images/incident-investigation.png)
 
 ### 3. Service Topology Map (`/map` & `/architecture`)
 Interactive canvas rendering the 4 architectural tiers, active dependencies, fan-out rates, and visual cascading failure paths.
 
-> **[Add Architecture Screenshot]**  
-> *Service dependency graph, 4 architectural tiers, and causal failure cascade paths.*
+![Service Topology Map](docs/images/architecture.png)
 
 ### 4. Benchmark & Evaluation Console (`/evaluation`)
 Live evaluation harness displaying real-time precision/recall curves, localization accuracy, confusion matrices, and Wilson score confidence intervals.
 
-> **[Add Evaluation Dashboard Screenshot]**  
-> *Live benchmark metrics, confusion matrix, and Wilson confidence intervals.*
+![Evaluation Dashboard](docs/images/evaluation-dashboard.png)
 
 ---
 
