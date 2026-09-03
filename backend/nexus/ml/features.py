@@ -2,7 +2,7 @@
 
 Deliberately class-agnostic: no feature encodes "which scenario is armed", and
 service identity is generalised to `kind` so the model cannot memorise
-service->label. 30 features, fixed order.
+service->label. 35 features, fixed order.
 """
 from __future__ import annotations
 

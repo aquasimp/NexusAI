@@ -6,7 +6,7 @@ const PILLARS = [
   ["Statistics before LLMs",
    "Harmonic seasonal baselines, AR(1) whitening, shrinkage-covariance Mahalanobis distance and IsolationForest fused into one calibrated score with a k-of-n persistence gate."],
   ["Evidence-ranked root cause",
-   "A trained multinomial classifier over 30 incident features ranks seven causes and exposes per-feature contributions. The LLM narrates and critiques; it never invents the verdict."],
+   "A trained multinomial classifier over 35 incident features ranks seven causes and exposes per-feature contributions. The LLM narrates and critiques; it never invents the verdict."],
   ["Measured, not asserted",
    "A benchmark harness replays labelled episodes and computes detection F1, localization top-k, root-cause accuracy under grouped CV, retrieval nDCG and latency. Every published number is generated at run time."],
 ];
