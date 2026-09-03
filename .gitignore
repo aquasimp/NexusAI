@@ -62,6 +62,7 @@ data/models/*
 data/evaluations/*
 !data/evaluations/.gitkeep
 backend/data/
+.profile-repo/
 
 # Temporary Migration & Archive
 _archive/
