@@ -14,9 +14,10 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+backend/lib/
 lib64/
 parts/
+!web/lib/
 sdist/
 var/
 wheels/
@@ -37,6 +38,7 @@ htmlcov/
 web/node_modules/
 web/.next/
 web/out/
+*.tsbuildinfo
 .npm/
 npm-debug.log*
 yarn-debug.log*

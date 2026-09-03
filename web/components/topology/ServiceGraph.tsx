@@ -106,7 +106,7 @@ export function ServiceGraph({ nodes, edges, health, rootCause, path, onSelect }
       <div className="mt-2 flex flex-wrap gap-3 px-1">
         {Object.entries(KIND_COLOR).map(([k, c]) => (
           <span key={k} className="flex items-center gap-1.5 text-[10px] text-[--color-mute]">
-            <span className="h-2 w-2 rounded-full" style={{ background: c }} />{k}
+            <span className="h-2 w-2 rounded-full" style={{ background: c as string }} />{k}
           </span>
         ))}
         <span className="ml-auto text-[10px] text-[--color-mute]">
