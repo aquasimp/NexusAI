@@ -207,11 +207,12 @@ class Engine:
             # errors: baseline + injected + timeout-induced + inherited
             err = spec.base_error_pct + 100.0 * self.fault_value(sid, "hard_fail")
             err += self.fault_value(sid, "error_add")
-            err += 92.0 / (1.0 + math.exp(-(p95 - spec.timeout_ms) / (0.14 * spec.timeout_ms)))
+            if p95 > 0.6 * spec.timeout_ms:
+                err += 92.0 / (1.0 + math.exp(-(p95 - spec.timeout_ms) / (0.10 * spec.timeout_ms)))
             for d, f in spec.deps.items():
                 dspec = SERVICES[d]
                 inherited = frame[d]["error_rate"] * min(1.0, f)
-                absorbed = 0.42 if dspec.retry_policy > 0 else 0.0
+                absorbed = 0.42 if (spec.retry_policy > 0 or dspec.retry_policy > 0) else 0.0
                 if "circuit_breaker" in self.mitigations[sid]:
                     absorbed = 0.86
                 if "fallback_cache" in self.mitigations[sid]:

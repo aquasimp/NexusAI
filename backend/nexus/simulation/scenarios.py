@@ -75,7 +75,7 @@ def arm(engine: Engine, scenario_id: str, at_tick: int | None = None,
 
     if scenario_id == "db_latency_spike":
         engine.inject(Fault("f-db-lock", "postgres-primary", "service_time_mult",
-                            5.6 * j, t0, ramp_ticks=10, profile="ramp"))
+                            22.0 * j, t0, ramp_ticks=10, profile="ramp"))
         engine.inject(Fault("f-db-util", "postgres-primary", "util_add",
                             0.26 * j, t0, ramp_ticks=10))
     elif scenario_id == "bad_deploy":
