@@ -13,7 +13,8 @@ endif
 
 setup:
 	python -m venv backend/.venv
-	$(PY) -m pip install -U pip -r backend/requirements.txt
+	$(PY) -m pip install -U pip
+	$(PY) -m pip install -r backend/requirements.txt -r backend/requirements-dev.txt -e backend
 	cd web && npm install
 	@echo "\n✓ Setup complete. Run: make dev"
 
@@ -36,7 +37,7 @@ quick:
 	cd backend && $(PY) -m nexus.evaluation.runner --quick
 
 test:
-	cd backend && $(PYTEST) tests/unit -v
+	cd backend && $(PYTEST) tests -v
 
 lint:
 	cd backend && $(PY) -m ruff check nexus/

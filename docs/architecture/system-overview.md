@@ -39,7 +39,7 @@ Every UI component, metric, and investigation step carries an explicit provenanc
 - `PRODUCTION-GAP`: Real-world infrastructure components (such as OpenTelemetry collectors, Kafka message brokers, and enterprise vector databases) that would replace simulated components in a multi-region deployment.
 
 ### 2. Microservice Topology
-The simulated architecture reflects a real-world enterprise e-commerce platform across 5 architectural tiers:
+The simulated architecture reflects a real-world enterprise e-commerce platform across 4 tiers / 5 service kinds:
 1. **Tier 0 (Edge)**: `api-gateway` (FastAPI/Envoy proxy)
 2. **Tier 1 (Application)**: `auth-service`, `payment-service`, `recommendation-service`, `notification-service`
 3. **Tier 2 (Datastore / Cache)**: `postgres-primary`, `redis-cache`

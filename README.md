@@ -2,14 +2,14 @@
 
 > **Autonomous Incident Intelligence Platform over Causal Telemetry Simulation**
 
-[![Backend CI](https://github.com/nexus-ai/nexus/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
-[![Frontend CI](https://github.com/nexus-ai/nexus/actions/workflows/frontend.yml/badge.svg)](.github/workflows/frontend.yml)
+[![Backend CI](https://github.com/aquasimp/NexusAI/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![Frontend CI](https://github.com/aquasimp/NexusAI/actions/workflows/frontend.yml/badge.svg)](.github/workflows/frontend.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![Next.js 16](https://img.shields.io/badge/next.js-16.3-black.svg)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.136.1-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-NEXUS AI is an enterprise-grade autonomous Site Reliability Engineering (SRE) intelligence platform. It couples a closed-loop causal telemetry simulation engine with a multi-stage machine learning and LLM reasoning pipeline to automatically detect, isolate, diagnose, and remediate distributed microservice failures.
+NEXUS AI is a production-oriented autonomous Site Reliability Engineering (SRE) intelligence platform prototype. It couples a closed-loop causal telemetry simulation engine with a multi-stage machine learning and LLM reasoning pipeline to automatically detect, isolate, diagnose, and remediate distributed microservice failures.
 
 Everything runs **completely offline** with zero API keys required by default.
 
@@ -48,7 +48,7 @@ Everything runs **completely offline** with zero API keys required by default.
 ## Key Capabilities
 
 1. **Causal Queueing Network Simulation**:
-   - 9 microservices across 5 architectural tiers (Edge, Application, Datastores, In-Memory Caches, External SaaS).
+   - 9 microservices across 4 tiers / 5 service kinds (Edge, Application, Datastores, In-Memory Caches, External SaaS).
    - Diurnal sinusoidal traffic curves with Poisson arrivals.
    - Emergent cascades: retry storms, queue saturation, and downstream backpressure emerge causally rather than following hardcoded scripts.
 2. **Multi-Signal Statistical Anomaly Detection**:
@@ -136,8 +136,8 @@ nexusAI/
 ### 1. Automated Setup
 ```bash
 # Clone the repository
-git clone https://github.com/nexus-ai/nexus.git
-cd nexus
+git clone https://github.com/aquasimp/NexusAI.git
+cd NexusAI
 
 # Run the one-command setup
 python scripts/setup/setup.py
