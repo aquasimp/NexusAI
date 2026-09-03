@@ -61,6 +61,7 @@ data/models/*
 !data/models/.gitkeep
 data/evaluations/*
 !data/evaluations/.gitkeep
+backend/data/
 
 # Temporary Migration & Archive
 _archive/
