@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/.venv/
+.venv/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Next.js / Node
+web/node_modules/
+web/.next/
+web/out/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment & Credentials
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Runtime Data & Artifacts
+data/nexus.db
+data/*.sqlite
+data/*.joblib
+data/eval_latest.json
+data/runtime/*
+!data/runtime/.gitkeep
+data/models/*
+!data/models/.gitkeep
+data/evaluations/*
+!data/evaluations/.gitkeep
+
+# Temporary Migration & Archive
+_archive/
+inventory_before.txt
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

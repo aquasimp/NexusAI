@@ -1,0 +1,33 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nexus-api
+    ports:
+      - "8000:8000"
+    environment:
+      - NEXUS_WALL_SECONDS=0.6
+      - NEXUS_TICK_SECONDS=15.0
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: nexus-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXUS_API=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
