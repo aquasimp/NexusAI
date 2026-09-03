@@ -99,8 +99,6 @@ __all__ = [
 ]
 ''')
 
-    # nexus/sim/__init__.py (compatibility)
-    write("sim/__init__.py", '"""Compatibility alias package for nexus.simulation."""\nfrom ..simulation import *\nfrom ..simulation import topology, engine, scenarios, logs\n')
 
     # nexus/ml/__init__.py
     write("ml/__init__.py", '''from .detector import Detector
@@ -124,8 +122,6 @@ __all__ = [
     # nexus/evaluation/__init__.py
     write("evaluation/__init__.py", 'from . import benchmark, metrics, runner\n\n__all__ = ["benchmark", "metrics", "runner"]\n')
 
-    # nexus/eval/__init__.py (compatibility)
-    write("eval/__init__.py", '"""Compatibility alias package for nexus.evaluation."""\nfrom ..evaluation import benchmark, metrics, runner\n')
 
     # nexus/api/__init__.py
     write("api/__init__.py", 'from .routes import router\n\n__all__ = ["router"]\n')

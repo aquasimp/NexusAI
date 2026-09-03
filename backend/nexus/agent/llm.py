@@ -91,7 +91,7 @@ class LLMClient:
         async with httpx.AsyncClient(timeout=settings.llm_timeout) as c:
             r = await c.post(
                 "https://api.anthropic.com/v1/messages",
-                headers={"x-api-key": settings.anthropic_api_key,
+                headers={"x-api-key": settings.anthropic_api_key or "",
                          "anthropic-version": "2023-06-01",
                          "content-type": "application/json"},
                 json={"model": self.model, "max_tokens": 1600, "temperature": 0.2,

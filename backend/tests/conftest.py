@@ -1,7 +1,6 @@
 """Pytest test configuration and fixtures for NEXUS AI."""
 import pytest
 from nexus.simulation.engine import Engine
-from nexus.simulation.topology import SERVICES, EVAL_ORDER
 from nexus.rag.store import KB
 
 @pytest.fixture

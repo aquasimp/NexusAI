@@ -29,3 +29,13 @@ def test_mann_kendall_tau():
     ramp = np.arange(30, dtype=float)
     tau = mann_kendall_tau(ramp)
     assert abs(tau - 1.0) < 1e-4
+
+
+def test_onset_for_service_finds_earliest_metric():
+    """Verify onset_for_service finds the earliest changepoint across metrics."""
+    z = np.zeros((50, 3))
+    z[30:, 0] = 5.0  # shift at 30 for metric 0
+    z[20:, 1] = 5.0  # earlier shift at 20 for metric 1
+    onset = onset_for_service(z)
+    assert onset is not None
+    assert 18 <= onset <= 22

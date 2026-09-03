@@ -14,10 +14,10 @@ from .config import settings
 from .hub import hub
 from .ml.detector import Detector
 from .ml.rca_model import RCARanker
-from .sim.engine import Engine
-from .sim.logs import synthesize, to_dict
-from .sim.scenarios import SCENARIOS, arm
-from .sim.topology import METRICS, SERVICES
+from .simulation.engine import Engine
+from .simulation.logs import synthesize, to_dict
+from .simulation.scenarios import SCENARIOS, arm
+from .simulation.topology import METRICS, SERVICES
 
 
 class World:
@@ -47,7 +47,8 @@ class World:
     def warmup(self) -> dict:
         t0 = time.perf_counter()
         e = Engine(seed=101, tick_seconds=settings.tick_seconds)
-        times, hist = [], {s: {m: [] for m in METRICS} for s in SERVICES}
+        times: list[float] = []
+        hist: dict[str, dict[str, list[float]]] = {s: {m: [] for m in METRICS} for s in SERVICES}
         for _ in range(settings.warmup_ticks):
             times.append(e.sim_time())
             f = e.tick()

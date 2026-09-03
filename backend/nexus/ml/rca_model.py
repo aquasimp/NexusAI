@@ -8,7 +8,6 @@ Two rankers are exposed and the UI always states which one produced the answer:
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 
 import joblib
@@ -143,7 +142,7 @@ def predict_rule(x: np.ndarray, fdict: dict) -> RCAPrediction:
                           "contribution": round(w * match, 4),
                           "direction": "supports" if w > 0 else "contradicts"})
         scores[cls] = s
-        ev[cls] = sorted(items, key=lambda i: -abs(i["contribution"]))[:5]
+        ev[cls] = sorted(items, key=lambda i: -abs(float(str(i["contribution"]))))[:5]
 
     keys = list(scores)
     z = np.array([scores[k] for k in keys])

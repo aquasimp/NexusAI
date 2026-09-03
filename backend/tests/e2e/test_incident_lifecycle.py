@@ -1,8 +1,5 @@
-"""End-to-end test simulating a complete incident detection and mitigation loop."""
-import pytest
 from nexus.simulation.engine import Engine
 from nexus.simulation.scenarios import arm
-from nexus.simulation.topology import SERVICES
 
 def test_full_incident_mitigation_lifecycle():
     """Verify that an injected fault degrades services and the gold action restores them."""

@@ -17,6 +17,8 @@ from __future__ import annotations
 import time
 import uuid
 
+from typing import Any
+
 import numpy as np
 from sklearn.model_selection import GroupKFold
 
@@ -27,10 +29,10 @@ from ..ml import correlate, features as F
 from ..ml.detector import Detector
 from ..ml.rca_model import CLASSES, build_pipeline, predict_rule, save
 from ..rag.store import KB
-from ..sim.engine import Engine
-from ..sim.logs import synthesize, to_dict
-from ..sim.scenarios import SCENARIOS, arm
-from ..sim.topology import METRICS, SERVICES
+from ..simulation.engine import Engine
+from ..simulation.logs import synthesize, to_dict
+from ..simulation.scenarios import SCENARIOS, arm
+from ..simulation.topology import METRICS, SERVICES
 from . import metrics as M
 
 PRE, POST = 100, 90
@@ -39,7 +41,8 @@ PRE, POST = 100, 90
 def fit_detector() -> tuple[Detector, dict]:
     t0 = time.perf_counter()
     e = Engine(seed=101, tick_seconds=settings.tick_seconds)
-    times, hist = [], {s: {m: [] for m in METRICS} for s in SERVICES}
+    times: list[float] = []
+    hist: dict[str, dict[str, list[float]]] = {s: {m: [] for m in METRICS} for s in SERVICES}
     for _ in range(settings.warmup_ticks):
         times.append(e.sim_time())
         f = e.tick()
@@ -94,7 +97,7 @@ def _episode(det: Detector, scenario_id: str | None, seed: int) -> dict:
                 "author": d.author, "change": d.change, "risk": d.risk}
                for d in eng.deploys]
 
-    out = {"scenario": scenario_id, "seed": seed, "inject_tick": inject_tick,
+    out: dict[str, Any] = {"scenario": scenario_id, "seed": seed, "inject_tick": inject_tick,
            "first_detection_tick": first_det,
            "peak_score": round(float(max(scores)), 5),
            "clean_peak_score": round(float(max(scores[:PRE])), 5),
@@ -184,7 +187,7 @@ def run(seeds_per_scenario: int | None = None,
     ranked = [e["blame_ranking"] for e in detected]
     truth = [SCENARIOS[e["scenario"]].root_service for e in detected]
     top1 = sum(1 for r, t in zip(ranked, truth) if r and r[0] == t)
-    localization = {
+    localization: dict[str, Any] = {
         "top1_accuracy": M.topk_accuracy(ranked, truth, 1),
         "top2_accuracy": M.topk_accuracy(ranked, truth, 2),
         "top3_accuracy": M.topk_accuracy(ranked, truth, 3),
@@ -208,7 +211,7 @@ def run(seeds_per_scenario: int | None = None,
     if len(set(y)) > 1 and len(y) >= 2 * settings.cv_folds:
         folds = min(settings.cv_folds, len(set(groups)))
         gkf = GroupKFold(n_splits=folds)
-        yp = np.empty(len(y), dtype=object)
+        yp: np.ndarray = np.empty(len(y), dtype=object)
         conf_hits: list[tuple[float, bool]] = []
         for tr, te in gkf.split(X, y, groups):
             pipe = build_pipeline().fit(X[tr], y[tr])
@@ -216,14 +219,14 @@ def run(seeds_per_scenario: int | None = None,
             yp[te] = pipe.classes_[np.argmax(pr, axis=1)]
             for i, row in zip(te, pr):
                 conf_hits.append((float(row.max()), bool(pipe.classes_[row.argmax()] == y[i])))
-        yp = list(yp)
-        acc_hits = sum(1 for a, b in zip(y, yp) if a == b)
+        yp_list = [str(val) for val in yp]
+        acc_hits = sum(1 for a, b in zip(y, yp_list) if a == b)
         rca.update({
             "cv_scheme": f"GroupKFold(n_splits={folds}) grouped on episode seed",
             "learned_accuracy": round(acc_hits / len(y), 4),
             "learned_accuracy_ci95": M.wilson_ci(acc_hits, len(y)),
-            **M.macro_f1(list(y), yp, list(CLASSES)),
-            "confusion_matrix": M.confusion(list(y), yp, list(CLASSES)),
+            **M.macro_f1(list(y), yp_list, list(CLASSES)),
+            "confusion_matrix": M.confusion(list(y), yp_list, list(CLASSES)),
             "calibration_bins": _calibration(conf_hits),
         })
         final = build_pipeline().fit(X, y)
@@ -301,7 +304,7 @@ def run(seeds_per_scenario: int | None = None,
         "scenarios": {k: {"title": v.title, "root_service": v.root_service,
                           "root_class": v.root_class} for k, v in SCENARIOS.items()},
         "honesty": "Every value in this document was computed by "
-                   "nexus.eval.benchmark on synthetic episodes with known "
+                   "nexus.evaluation.benchmark on synthetic episodes with known "
                    "ground truth. Nothing is hand-written. Small-n: 95% Wilson "
                    "intervals are reported for all accuracies.",
     }

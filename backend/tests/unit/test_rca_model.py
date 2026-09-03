@@ -25,6 +25,7 @@ def test_rca_heuristic_fallback_predict():
     pred, rule_pred = ranker.predict(x, feat_dict)
     assert hasattr(pred, "top_class")
     assert hasattr(pred, "confidence")
+    assert hasattr(rule_pred, "top_class")
     assert pred.confidence > 0.0
     assert len(pred.ranking) > 0
 
@@ -33,3 +34,4 @@ def test_rca_pipeline_construction():
     pipe = build_pipeline()
     assert hasattr(pipe, "fit")
     assert hasattr(pipe, "predict_proba")
+    assert len(CLASSES) == 7

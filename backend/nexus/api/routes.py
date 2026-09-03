@@ -12,11 +12,11 @@ from .. import store
 from ..agent.llm import LLMClient
 from ..agent.orchestrator import STAGES
 from ..config import settings
-from ..eval import benchmark
+from ..evaluation import benchmark
 from ..hub import hub
 from ..rag.store import KB
-from ..sim.scenarios import SCENARIOS
-from ..sim.topology import EDGES, SERVICES
+from ..simulation.scenarios import SCENARIOS
+from ..simulation.topology import EDGES, SERVICES
 from ..world import world
 
 router = APIRouter()
@@ -169,7 +169,7 @@ def evaluation():
     if not run:
         return {"available": False,
                 "message": "No benchmark run found. Execute `make eval` (or "
-                           "`python -m nexus.eval.runner --quick`). This page "
+                           "`python -m nexus.evaluation.runner --quick`). This page "
                            "renders only measured values — it will stay empty "
                            "rather than display placeholder numbers."}
     return {"available": True, "run": run}

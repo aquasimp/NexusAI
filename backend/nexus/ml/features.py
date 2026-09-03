@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..sim.topology import METRICS, SERVICES
+from ..simulation.topology import METRICS, SERVICES
 from .changepoint import mann_kendall_tau, trend_slope
 
 KINDS = ("edge", "app", "datastore", "cache", "external")

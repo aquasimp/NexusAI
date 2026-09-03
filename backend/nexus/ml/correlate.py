@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..sim.topology import SERVICES, dependents_transitive
+from ..simulation.topology import SERVICES, dependents_transitive
 from .changepoint import onset_for_service
 
 

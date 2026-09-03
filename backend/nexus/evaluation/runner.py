@@ -1,4 +1,4 @@
-"""CLI: `python -m nexus.eval.runner [--seeds N] [--clean N] [--quick]`"""
+"""CLI: `python -m nexus.evaluation.runner [--seeds N] [--clean N] [--quick]`"""
 from __future__ import annotations
 import argparse, json, sys
 

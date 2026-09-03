@@ -40,7 +40,8 @@ test:
 	cd backend && $(PYTEST) tests -v
 
 lint:
-	cd backend && $(PY) -m ruff check nexus/
+	cd backend && $(PY) -m ruff check nexus tests
+	cd backend && $(PY) -m mypy nexus --config-file pyproject.toml
 	cd web && npm run typecheck
 
 clean:

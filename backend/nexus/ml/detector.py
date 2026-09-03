@@ -23,7 +23,7 @@ import numpy as np
 from sklearn.covariance import LedoitWolf
 from sklearn.ensemble import IsolationForest
 
-from ..sim.topology import METRICS, SERVICES
+from ..simulation.topology import METRICS, SERVICES
 
 DAY = 86400.0
 LOG_METRICS = {"latency_p50", "latency_p95", "rps"}
@@ -181,7 +181,7 @@ class Detector:
         firing = [s for s, r in per_service.items() if r["firing"]]
         return {
             "threshold": round(self.threshold, 5),
-            "system_score": round(max(r["score"] for r in per_service.values()), 5),
+            "system_score": round(max(float(str(r["score"])) for r in per_service.values()), 5),
             "services": per_service,
             "firing": firing,
             "anomalous_fraction": round(len(firing) / len(per_service), 3),

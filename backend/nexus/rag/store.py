@@ -83,7 +83,8 @@ class KnowledgeBase:
                 "actions": meta.get("actions", []) or [],
                 "path": path.name, "body": body.strip(),
             }
-            heading, buf = "Overview", []
+            heading = "Overview"
+            buf: list[str] = []
 
             def flush(h, b):
                 text = "\n".join(b).strip()

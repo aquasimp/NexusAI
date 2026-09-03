@@ -257,12 +257,12 @@ class Engine:
             self.replica_scale[target] = min(4.0, self.replica_scale[target] * 2.0)
             changed["effects"] = [f"replica_scale={self.replica_scale[target]}"]
         elif action_id == "enable_circuit_breaker":
-            for c in callers_of(target):
-                self.mitigations[c].add("circuit_breaker")
+            for clr in callers_of(target):
+                self.mitigations[clr].add("circuit_breaker")
             changed["effects"] = [f"breaker_on={callers_of(target)}"]
         elif action_id == "enable_fallback_cache":
-            for c in callers_of(target):
-                self.mitigations[c].add("fallback_cache")
+            for clr in callers_of(target):
+                self.mitigations[clr].add("fallback_cache")
             changed["effects"] = [f"fallback_on={callers_of(target)}"]
         elif action_id == "kill_blocking_queries":
             c = self.clear_faults(target, ("service_time_mult", "util_add"), by=action_id)

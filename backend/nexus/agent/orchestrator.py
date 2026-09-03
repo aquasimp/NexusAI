@@ -13,8 +13,6 @@ import asyncio
 import json
 import time
 
-import numpy as np
-
 from ..config import settings
 from ..ml import features as F
 from ..ml import correlate

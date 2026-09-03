@@ -1,9 +1,9 @@
 import numpy as np
 from nexus.ml.detector import Detector
 from nexus.rag.store import KB
-from nexus.sim.engine import Engine, Fault
-from nexus.sim.scenarios import arm
-from nexus.sim.topology import METRICS, SERVICES
+from nexus.simulation.engine import Engine, Fault
+from nexus.simulation.scenarios import arm
+from nexus.simulation.topology import METRICS, SERVICES
 
 
 def _run(e, n):
@@ -90,3 +90,12 @@ def test_retrieval_finds_gold_docs():
     top = [r["doc_id"] for r in KB.search(
         "memory leak OOM heap growth restart", k=3)]
     assert "rb-memory-leak" in top
+
+
+def test_fault_intensity_and_clearing():
+    f = Fault("test-f", "postgres-primary", "service_time_mult", magnitude=10.0, start_tick=10, ramp_ticks=5)
+    assert f.intensity(5) == 0.0
+    assert f.intensity(10) == 0.0
+    assert f.intensity(15) == 10.0
+    f.cleared_tick = 20
+    assert f.intensity(35) == 0.0

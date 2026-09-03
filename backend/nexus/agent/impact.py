@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..sim.topology import REVENUE_PER_REQ, SERVICES, dependents_transitive
+from ..simulation.topology import REVENUE_PER_REQ, SERVICES, dependents_transitive
 
 MONTHLY_BUDGET_MIN = 43200.0          # minutes in a 30-day month
 ASSUMED_SESSION_REQS = 7.5            # requests per user session (assumption)

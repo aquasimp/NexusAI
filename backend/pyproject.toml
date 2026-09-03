@@ -28,6 +28,7 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "ruff>=0.5.0",
+    "mypy>=1.10.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -40,3 +41,25 @@ addopts = "-ra -q"
 testpaths = ["tests"]
 pythonpath = ["."]
 asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = [
+    "E501",  # line length
+    "E702",  # multiple statements on one line
+    "E401",  # multiple imports on one line
+    "E741",  # ambiguous variable name
+    "F403",  # star imports
+    "F405",  # star import undefined
+]
+
+[tool.mypy]
+python_version = "3.11"
+packages = ["nexus"]
+ignore_missing_imports = true
+warn_unused_configs = true
+check_untyped_defs = false

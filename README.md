@@ -113,7 +113,7 @@ The engine simulates an e-commerce platform spanning **9 services** across **4 a
 +--------------------------------------------------------------------------------------------------+
 |                                   TIER 3 · EXTERNAL DEPENDENCIES                                 |
 |                                                                                                  |
-|                                     [stripe-api] (external)                                      |
+|               [stripe-api] (external)                     [sendgrid-api] (external)              |
 +--------------------------------------------------------------------------------------------------+
 ```
 
@@ -219,16 +219,42 @@ All metrics below are measured from the full multi-seed evaluation harness (**12
 | | Top-2 Accuracy | **86.67%** | 52/60 root-cause services in top 2 |
 | | Top-3 Accuracy | **88.33%** | 53/60 root-cause services in top 3 |
 | **Root Cause Analysis** | Learned Model Accuracy | **95.00%** | Seed-grouped 4-fold cross-validation |
-| | Macro F1 | **0.9500** | Balanced across all 7 fault classes |
+| | Macro F1 | **0.9500** | Across 5 active/evaluated RCA classes (see breakdown below) |
 | | Rule-Based Baseline | **53.33%** | Learned model provides **+41.67%** improvement |
 | **Runbook Retrieval** | Recall@3 | **0.6000** | Correct playbook ranked in top 3 |
 | | Recall@5 | **0.7750** | Correct playbook ranked in top 5 |
 | | Mean Reciprocal Rank (MRR) | **0.7653** | Reciprocal rank fusion score |
 | | nDCG@3 / nDCG@5 | **0.5928 / 0.6852**| Normalized discounted cumulative gain |
-| **End-to-End System** | Joint Success Rate | **32.14%** | 95% CI: `[23.13%, 42.72%]` (Detection ∧ Loc ∧ RCA ∧ RAG ∧ Remediation) |
+| **End-to-End System** | Joint Success Rate | **32.14%** | 95% CI: `[23.13%, 42.72%]` (Strict chain: Det ∧ Loc ∧ RCA ∧ RAG ∧ Action) |
+
+### Per-Scenario Detection Breakdown (12 Seeds per Scenario)
+
+| Scenario | Root Service | Injected Fault Type | Detection Rate | Status / Signature Characteristic |
+| :--- | :--- | :--- | :--- | :--- |
+| `db_latency_spike` | `postgres-primary` | Service time multiplier + disk I/O util | **12 / 12 (100.0%)** | Detected |
+| `bad_deploy` | `payment-service` | Release regression: step latency + error spike | **12 / 12 (100.0%)** | Detected |
+| `memory_leak` | `recommendation-service` | Linear heap accumulation (+0.85%/min) | **0 / 12 (0.0%)** | ⚠️ Undetected within 90-tick evaluation horizon |
+| `traffic_surge` | `api-gateway` | 2.2x exponential traffic surge | **12 / 12 (100.0%)** | Detected |
+| `dependency_outage` | `stripe-api` | Upstream hard failures + timeout degradation | **12 / 12 (100.0%)** | Detected |
+| `api_error_explosion` | `api-gateway` | Config schema rejection: isolated 5xx step | **0 / 12 (0.0%)** | ⚠️ Undetected under strict multivariate threshold |
+| `cascading_failure` | `redis-cache` | Cache eviction storm + retry amplification | **12 / 12 (100.0%)** | Detected |
+| **Clean Baseline** | *(none)* | Nominal diurnal load without fault injection | **24 / 24 (0.0% FP)** | 0 false alarms across 24 clean episodes |
+| **Overall Incident Detection** | — | **7 fault scenarios across 12 seeds** | **60 / 84 (71.43%)** | 95% Wilson CI: `[0.6100, 0.7999]` |
+
+#### Technical Analysis of Undetected Signatures
+
+1. **`memory_leak` (0/12 detected)**:
+   - **Physics**: In `nexus.simulation.engine`, memory accumulates linearly at `+0.85%/min` (`leak_rate * dt / 60.0`). Within the benchmark evaluation window (90 post-fault ticks = 22.5 simulated minutes), heap memory on `recommendation-service` climbs from baseline (~57%) to ~76–80%.
+   - **Detector Dynamics**: The simulator's internal GC pressure, latency inflation, and OOM restarts do not trigger until `mem > 88.0%`. Until that knee is crossed, service latency, error rates, and RPS remain nominal. Furthermore, the lag-1 AR(1) whitening filter (`innov = resid[t] - rho * resid[t-1]`) treats gradual tick-to-tick linear drift with high autocorrelation as expected drift rather than an innovation shock. As a result, the 6-metric Mahalanobis distance does not cross the strict 0.999 quantile threshold before the 90-tick evaluation window closes.
+
+2. **`api_error_explosion` (0/12 detected)**:
+   - **Physics**: In `api_error_explosion`, a configuration push injects an immediate 27% step error increase exclusively on `api-gateway`.
+   - **Detector Dynamics**: Crucially, latency, RPS, CPU, memory, and all downstream services remain nominal. In the 6-dimensional multivariate space ($[\text{rps}, \text{latency}_{p50}, \text{latency}_{p95}, \text{error\_rate}, \text{cpu}, \text{mem}]$), only a single metric ($z_{\text{err}} \approx 4.65$) deviates while the remaining 5 orthogonal dimensions remain centered. Under Ledoit-Wolf shrinkage covariance, this isolated univariate shift yields an empirical system percentile that peaks at $\approx 0.9986$—narrowly falling short of the calibrated system-wide threshold ($0.9990$) and failing to satisfy the 3-of-5 persistence gate.
 
 > [!NOTE]
-> Joint Success measures strict end-to-end incident resolution: every single stage (detection, localization, root-cause classification, runbook retrieval, human approval, and post-action verification) must succeed without error.
+> **Evaluation Transparency & Metric Scope**:
+> - **Macro-F1 Scope (0.9500)**: The reported 0.9500 Macro-F1 is measured strictly across the **5 evaluated/active RCA classes** (`db_latency_saturation`, `bad_deploy`, `traffic_surge`, `dependency_outage`, `cascading_failure`) that passed Stage 1 detection ($n=60$). Because `memory_leak` and `api_error_explosion` were not detected by the upstream statistical filter, zero episodes of those two classes were presented to the RCA classifier. If unreached classes are assigned an F1 of 0.0, the 7-class all-inclusive Macro-F1 is $\frac{5 \times 0.95 + 2 \times 0.0}{7} = 0.6786$.
+> - **Joint End-to-End Success (32.14%)**: The 32.14% joint success rate ($n=84$, 95% Wilson CI: `[23.13%, 42.72%]`) is an **intentionally strict end-to-end benchmark criterion**, requiring the entire chain to succeed simultaneously: $\text{Detection} \land \text{Correct Root Service} \land \text{Correct Root-Cause Class} \land \text{Action in Gold Action Set}$. This benchmark evaluates autonomous closed-loop resolution across the full stack rather than isolated subsystem performance, and should not be confused with raw detection accuracy or production reliability uptime.
 
 ---
 

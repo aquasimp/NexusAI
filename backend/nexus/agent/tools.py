@@ -9,7 +9,7 @@ from typing import Any, Callable
 import numpy as np
 
 from ..rag.store import KB
-from ..sim.topology import EDGES, REVENUE_PER_REQ, SERVICES, dependents_transitive
+from ..simulation.topology import EDGES, SERVICES, dependents_transitive
 
 TOOLS: dict[str, dict] = {}
 

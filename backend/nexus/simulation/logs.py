@@ -1,7 +1,6 @@
 """Log synthesis. Log *rates* are driven by the simulated metric state, so the
 log-pattern features the RCA model consumes carry genuine signal."""
 from __future__ import annotations
-import math
 from dataclasses import asdict, dataclass
 
 import numpy as np
