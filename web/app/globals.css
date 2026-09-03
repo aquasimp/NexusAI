@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #05070c;
+  --color-panel: #0b1017;
+  --color-panel-2: #0f1620;
+  --color-line: #1b2534;
+  --color-line-soft: #151d29;
+  --color-ink: #e8eef7;
+  --color-mute: #7b8a a0;
+  --color-dim: #4d5a६c;
+  --color-cyan: #35e0d0;
+  --color-blue: #4c8dff;
+  --color-violet: #8b7cff;
+  --color-amber: #ffb642;
+  --color-rose: #ff5d73;
+  --color-lime: #64e08a;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root { color-scheme: dark; }
+
+html, body {
+  background: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+}
+
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1100px 600px at 12% -8%, rgba(53,224,208,.09), transparent 60%),
+    radial-gradient(900px 520px at 88% 0%, rgba(76,141,255,.10), transparent 62%),
+    radial-gradient(700px 700px at 50% 115%, rgba(139,124,255,.07), transparent 65%);
+}
+
+/* hairline grid, very low contrast — enterprise texture without noise */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black, transparent 78%);
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(15,22,32,.92), rgba(11,16,23,.92));
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 18px 40px -28px rgba(0,0,0,.9);
+  backdrop-filter: blur(8px);
+}
+.panel-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .75rem; padding: .85rem 1.1rem;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.kicker {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--color-dim);
+}
+.metric { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.chip {
+  display: inline-flex; align-items: center; gap: .375rem; padding: .18rem .5rem;
+  border-radius: 999px; border: 1px solid var(--color-line);
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; background: rgba(255,255,255,.02);
+}
+.gradient-text {
+  background: linear-gradient(100deg, #eaf2ff 12%, #59e6d6 52%, #7f8dff 92%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hairline { height: 1px; background: linear-gradient(90deg, transparent,
+  var(--color-line) 18%, var(--color-line) 82%, transparent); }
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255,93,115,.42); }
+  70% { box-shadow: 0 0 0 12px rgba(255,93,115,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,93,115,0); }
+}
+.pulse { animation: pulse-ring 1.9s cubic-bezier(.4,0,.2,1) infinite; }
+@keyframes dash { to { stroke-dashoffset: -220; } }
+.flow { stroke-dasharray: 5 9; animation: dash 3.4s linear infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+.skeleton { position: relative; overflow: hidden; background: var(--color-line-soft); }
+.skeleton::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.055), transparent);
+  animation: shimmer 1.5s infinite;
+}
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: #1d2735; border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important;
+    transition-duration: .001ms !important; }
+}
